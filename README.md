@@ -1,6 +1,6 @@
-# Close The Books — conciliación bancaria a escala
+# Close The Books - Conciliación bancaria a escala
 
-**Motor de conciliación bancaria en Python que decide, para cada movimiento del banco, qué facturas y abonos abiertos liquida y por qué importe. Hecho en un día en la Claude Code Hackathon de Talky.**
+**Motor de conciliación bancaria en Python que decide, para cada movimiento del banco, qué facturas y abonos abiertos liquida y por qué importe. Hecho en la Claude Code Hackathon de Talky.**
 
 [![Tests](https://github.com/xilin01/Hackathon-Close-The-Books/actions/workflows/tests.yml/badge.svg)](https://github.com/xilin01/Hackathon-Close-The-Books/actions/workflows/tests.yml)
 [![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-yellow.svg)](LICENSE)
@@ -23,7 +23,7 @@
 
 ## Resultado
 
-- **5.º puesto en Madrid y 1.er equipo de la UCM** en la [Claude Code Hackathon «Close the Books»](https://hackathon.usetalky.com/) (Talky × Claude Community, La Nave, Madrid, 7 de noviembre de 2026).
+- **5to puesto de Madrid y 1er equipo de la UCM** de +15 equipos participantes.
 - **95,28 / 100 en FINAL**, sobre 220.256 movimientos de un semestre nunca visto y con *drift* a propósito.
 - **Del 9.º puesto en LIVE al 5.º en FINAL**: la nota subió al cambiar de datos (93,83 → 95,28), señal de que el sistema generaliza.
 - De **2,84 a 93,83** en el ranking LIVE durante el día.
@@ -42,7 +42,7 @@
   <img src="docs/img/resultado-final.png" alt="Resultado del envío FINAL en la plataforma: 95,28 sobre 100, con el desglose por métrica y por segmento" width="820">
 </p>
 
-El histórico de envíos, con la nota por segmento, está en [`docs/SCOREBOARD.md`](docs/SCOREBOARD.md). Recoge los 14 envíos de LIVE y el primer intento de FINAL (93,86); el segundo intento (95,28) es el que cuenta en la clasificación.
+El histórico de envíos, con la nota por segmento, está en [`docs/SCOREBOARD.md`](docs/SCOREBOARD.md). Recoge los 14 envíos de LIVE y el primer intento de FINAL (93,86). El segundo intento (95,28) es el que cuenta en la clasificación.
 
 ---
 
@@ -50,15 +50,15 @@ El histórico de envíos, con la nota por segmento, está en [`docs/SCOREBOARD.m
 
 El **Grupo Valtermia** (ficticio, todos los datos son sintéticos) tiene 17 sociedades en 15 países, 12 divisas, 13 bancos y 47 cuentas. Su tesorería recibe cientos de miles de movimientos bancarios por semestre. Para cada uno hay que decir:
 
-1. qué **partidas abiertas** liquida (facturas y abonos de clientes y proveedores) y **por qué importe**;
-2. si no liquida ninguna, qué es (**categoría**: comisión, nómina, impuesto, *cash pooling*…);
-3. qué **excepción** tiene, de una lista cerrada: pago parcial, pronto pago, gastos bancarios, retención, diferencia de cambio, devolución, duplicado, cobro no identificado…
+1. Qué **partidas abiertas** liquida (facturas y abonos de clientes y proveedores) y **por qué importe**.
+2. Si no liquida ninguna, qué es (**categoría**: comisión, nómina, impuesto, *cash pooling*…).
+3. Qué **excepción** tiene de una lista cerrada: pago parcial, pronto pago, gastos bancarios, retención, diferencia de cambio, devolución, duplicado, cobro no identificado…
 
 Los datos llegan como los recibiría una empresa real:
 
-- extractos en **Norma 43**, **MT940** y **camt.053** (XML);
-- remesas de recibos, liquidaciones de tarjeta, ingresos de cheques, *confirming* y *payment runs*;
-- **avisos de pago en PDF**.
+- Extractos en **Norma 43**, **MT940** y **camt.053** (XML).
+- Remesas de recibos, liquidaciones de tarjeta, ingresos de cheques, *confirming* y *payment runs*.
+- **Avisos de pago en PDF**.
 
 El texto del banco no trae el identificador de la factura. Solo trae el número impreso, a menudo sin prefijo, con erratas o cortado a 16, 35 o 38 caracteres.
 
@@ -78,7 +78,7 @@ El enunciado completo está en [`bankrec-docs-and-masters/`](bankrec-docs-and-ma
 
 ## Cómo funciona
 
-Una **cascada de resolvers** recorre los movimientos en orden de fecha. El primer resolver que propone una asignación gana. Los más precisos van primero; los más arriesgados, al final. Un **ledger** de partidas abiertas mantiene el saldo vivo de cada factura, así que un pago parcial de hoy cambia lo que se puede asignar mañana.
+Una **cascada de resolvers** recorre los movimientos en orden de fecha. El primer resolver que propone una asignación gana. Los más precisos van primero, los más arriesgados, al final. Un **ledger** de partidas abiertas mantiene el saldo vivo de cada factura, así que un pago parcial de hoy cambia lo que se puede asignar mañana.
 
 ```mermaid
 flowchart TB
@@ -110,7 +110,7 @@ Alloc(item_id: str, amount_cents: int, exception: str = "")
 Proposal(bank_txn_id, allocs: list[Alloc], category="", exception="", confidence=0.0, resolver="", reason="")
 ```
 
-y define `prepare(ctx)` más `resolve_batch(ctx)` (joins vectorizados) o `resolve(txn, ctx, ledger)` (movimiento a movimiento, con el ledger).
+Y define `prepare(ctx)` más `resolve_batch(ctx)` (joins vectorizados) o `resolve(txn, ctx, ledger)` (movimiento a movimiento, con el ledger).
 
 ### Decisiones de diseño
 
@@ -129,7 +129,7 @@ y define `prepare(ctx)` más `resolve_batch(ctx)` (joins vectorizados) o `resolv
 
 Cuatro personas, cada una con su Claude Code, trabajando a la vez sobre el mismo repo durante un día. La coordinación vive en el propio repositorio:
 
-- **[`CLAUDE.md`](CLAUDE.md)** es el contrato del equipo: el reto en un minuto, la **propiedad de cada fichero por rol** (cada uno toca solo lo suyo), el contrato de los resolvers, las reglas anti-overfitting y la guía paso a paso del envío FINAL, ensayada dos veces antes de las 18:00.
+- **[`CLAUDE.md`](CLAUDE.md)** es el contrato del equipo: el reto en un minuto, la **propiedad de cada fichero por rol** (cada uno toca solo lo suyo), el contrato de los resolvers, las reglas anti-overfitting y la guía paso a paso del envío FINAL.
 - **Skill `eval`** ([`.claude/skills/eval`](.claude/skills/eval/SKILL.md)): cómo medir cualquier cambio (smoke, validación por segmento, volcado de fallos).
 - **Agente `golden-auditor`** ([`.claude/agents`](.claude/agents/golden-auditor.md)): auditor de solo lectura que agrupa los fallos de un segmento en patrones con ejemplos.
 - **[`docs/SCOREBOARD.md`](docs/SCOREBOARD.md)**: cada envío con su commit, su nota de validación local y su nota en LIVE. Regla: un cambio por envío.
@@ -194,7 +194,7 @@ LIVE completo (203.083 movimientos) tarda menos de 10 minutos en un portátil.
 
 ## Mi contribución
 
-Fui **P1 (core)**: 60 de los 130 commits.
+**P1 (core)**: 60 de los 130 commits.
 
 - **Arquitectura:** esqueleto del proyecto, contrato de resolvers, carga con caché, fases, ledger, pipeline, cascada y validador.
 - **Matching 1:1:** referencias impresas (`refs`), identificación de terceros (`parties`), `text_ref`, `amount_match` (incluido FX y `DUPLICATE_PAYMENT`) y el ranker LightGBM.
